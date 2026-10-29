@@ -6,6 +6,13 @@ are in assets/site.css and assets/site.js. Images are served locally.
 
 Live site: https://joshcalcino.github.io/website/
 
+The homepage CVs section links to two public PDFs under assets/cv/:
+  Josh_Calcino_Academic_CV.pdf       Full academic CV
+  Josh_Calcino_Data_Science_Resume.pdf  One-page data science resume
+Keep these public filenames stable when replacing the PDFs. Update the page
+counts on the homepage if they change. Use a neutral document title in each
+PDF's metadata; do not use an employer-specific application filename.
+
 To preview from this repository directory:
   python3 -m http.server 8000 --bind 127.0.0.1 --directory ..
 Then open http://127.0.0.1:8000/website/ (keep the directory named website).
