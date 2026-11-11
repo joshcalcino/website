@@ -1,0 +1,54 @@
+{
+  "slug": "irs-48",
+  "title": "Gas and Dust in Oph IRS 48",
+  "subtitle": "",
+  "description": "Gas and Dust in Oph IRS 48 — research by Josh Calcino.",
+  "published": true,
+  "summary": "<p>On a clear winters night, observers in the Southern Hemisphere are treated with a mesmorising band of light that stretches across the sky, our home galaxy the Milky Way (see my <a href=\"/website/astrophotography/\">Astrophography</a> page for a view!). Not far from the centre of our galaxy lies one of the closest star forming regions to our Solar System, known as the Rho Ophiuchus Cloud Complex (pictured right). Roughly 200 young stars have been identified in this system, one of them being Ophiuchus IRS 48. This star has a disc of gas and dust orbiting around it, like many young stars in Ophiuchus. However the disc around Oph IRS 48 is very peculiar compared to the discs around its siblings.</p>",
+  "order": 2,
+  "thumbnail": {
+    "src": "/website/assets/images/7145bb_3d4e86afb4fa4ea2a8195321bc7227c2~mv2.webp",
+    "alt": "The Rho Ophiuchus cloud complex and the Milky Way. Credit: ESO/S. Guisard.",
+    "caption": "The Rho Ophiuchus Cloud Complex (top right, with the red and blue glow) with the galactic centre to its left. Credit: ESO/S. Guisard."
+  },
+  "paper_url": "https://arxiv.org/abs/1910.00161",
+  "sections": [
+    {
+      "type": "text",
+      "body": "<p>On a clear winters night, observers in the Southern Hemisphere are treated with a mesmorising band of light that stretches across the sky, our home galaxy the Milky Way (see my <a href=\"/website/astrophotography/\">Astrophography</a> page for a view!). Not far from the centre of our galaxy lies one of the closest star forming regions to our Solar System, known as the Rho Ophiuchus Cloud Complex (pictured right). Roughly 200 young stars have been identified in this system, one of them being Ophiuchus IRS 48. This star has a disc of gas and dust orbiting around it, like many young stars in Ophiuchus. However the disc around Oph IRS 48 is very peculiar compared to the discs around its siblings.</p>"
+    },
+    {
+      "type": "figure",
+      "src": "/website/assets/images/7145bb_3d4e86afb4fa4ea2a8195321bc7227c2~mv2.webp",
+      "alt": "The Rho Ophiuchus cloud complex. Credit: ESO/S. Guisard.",
+      "caption": "The Rho Ophiuchus Cloud Complex (top right, with the red and blue glow) with the galactic centre to its left. Credit: ESO/S. Guisard."
+    },
+    {
+      "type": "figure",
+      "src": "/website/assets/images/7145bb_6e739fee0c6a47789c1f4c119024e6d6~mv2.webp",
+      "alt": "Simulated and observed dust distributions in Oph IRS 48.",
+      "caption": "How my simulation of a dust disc around a binary star system would appear if observed by the Atacama Large Millimeter Array (left panel) compared with the observed dust disc around Oph IRS 48. There is a large asymmetry in the dust distribution for both the simulation and observations (observations from van der Marel et al. 2015)."
+    },
+    {
+      "type": "text",
+      "body": "<p>The dust disc around Oph IRS 48 is very peculiar because it contains a large asymmetry in the distribution of dust grains (see right panel of above figure). I can qualitatively recreate this feature if Oph IRS 48 is a binary star system; there are two stars rather than one! This candidate companion star has not been observed yet, but should be about 40% the mass of the Sun. My simulation does not perfectly recreate the observations, but its not too bad considering that it was a first attempt. </p><p>The strongest evidence that my hypothesis of two stars in Oph IRS 48 is correct comes when we look at how the gas is moving in the disc around the binary stars. In the figure below, I am showing how the gas is moving in my simulation (left panel) compared with that observed in Oph IRS 48 (right panel). Blue portions are moving towards us, red parts are moving away from us. The interesting feature in the observations is the &#x27;kinky&#x27; shape seen mainly on the red side. We don&#x27;t expect to see this in a disc around a single star, but I can recreate this effect in my simulation.</p>"
+    },
+    {
+      "type": "figure",
+      "src": "/website/assets/images/7145bb_c97f52169e9d4e7195db8335051df7e7~mv2.webp",
+      "alt": "Simulated and observed gas velocities in Oph IRS 48.",
+      "caption": "The motion of gas in the disc of my simulation (left panel) compared with Oph IRS 48 (right panel, data from van der Marel et al. 2016). The disc is rotating. Blue portions are moving towards us while the red parts are moving away. The weird &#x27;kinks&#x27; in the red portion of the observations are recreated in my simulation of a disc around a binary star system."
+    },
+    {
+      "type": "text",
+      "body": "<p>By far the coolest part of running these simulations is the movies I can make from their output. Below is a video of the gas in the simulation that was run to generate the figures above. Each frame of the movie below is an entire orbit of the companion star. The companion star appears to move because it interacts with the disc and its orbit changes, so the output from the simulation is no longer in sync with the orbit of the companion.</p>"
+    },
+    {
+      "type": "video",
+      "youtube_id": "OFAvwbqlZMY",
+      "title": "Oph IRS 48 gas simulation",
+      "caption": "<a href=\"https://youtu.be/OFAvwbqlZMY\">Watch on YouTube</a>"
+    }
+  ],
+  "intro_layout": "split"
+}

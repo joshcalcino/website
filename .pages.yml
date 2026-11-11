@@ -1,0 +1,153 @@
+media:
+  - name: images
+    label: Images and figures
+    input: assets
+    output: /website/assets
+    extensions: [png, jpg, jpeg, webp, gif]
+    rename: safe
+
+components:
+  formatted-text:
+    type: rich-text
+    options:
+      format: html
+      switcher: false
+      media: images
+      path: assets/research
+  figure:
+    type: object
+    fields:
+      - name: src
+        label: Image
+        type: image
+        required: true
+        options:
+          media: images
+          path: assets/research
+      - name: alt
+        label: Image description
+        type: text
+        required: true
+        description: Describe what the figure shows for readers using a screen reader.
+      - name: caption
+        label: Caption and credit
+        component: formatted-text
+      - name: anchor
+        type: string
+        hidden: true
+
+content:
+  - name: research-articles
+    label: Research articles
+    type: collection
+    path: content/research
+    format: json
+    filename: "{slug}.json"
+    subfolders: false
+    operations:
+      rename: false
+      delete: false
+    view:
+      primary: title
+      fields: [title, published]
+      sort: order
+      order: asc
+    fields:
+      - name: title
+        label: Article title
+        type: string
+        required: true
+      - name: published
+        label: Published
+        type: boolean
+        description: Leave off while drafting. Turn on when the article is ready to appear on your website.
+      - name: sections
+        label: Article sections
+        type: block
+        list: true
+        required: true
+        blockKey: type
+        description: Edit the text, figures, and videos here. Drag sections to change their order.
+        blocks:
+          - name: text
+            label: Text
+            fields:
+              - name: body
+                label: Text
+                component: formatted-text
+                required: true
+          - name: figure
+            label: Figure
+            component: figure
+          - name: video
+            label: Video
+            fields:
+              - name: youtube_id
+                label: YouTube video ID
+                type: string
+                required: true
+                description: The 11 characters after v= in a YouTube link, such as OFAvwbqlZMY.
+                pattern:
+                  regex: "^[A-Za-z0-9_-]{11}$"
+                  message: Enter the 11-character YouTube video ID.
+              - name: title
+                label: Video title
+                type: string
+                required: true
+              - name: caption
+                label: Caption
+                component: formatted-text
+      - name: subtitle
+        label: Subtitle (optional)
+        component: formatted-text
+      - name: summary
+        label: Summary on the Research page
+        component: formatted-text
+        required: true
+      - name: thumbnail
+        label: Figure on the Research page
+        component: figure
+        required: true
+      - name: paper_url
+        label: Paper link (optional)
+        type: string
+      - name: description
+        label: Short description for search results
+        type: text
+        required: true
+      - name: order
+        label: Position on the Research page
+        type: number
+        description: Smaller numbers appear first.
+      - name: slug
+        label: Page address
+        type: string
+        required: true
+        description: Leave unchanged for an existing article. Use lowercase words separated by hyphens.
+        pattern:
+          regex: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          message: Use lowercase words or numbers separated by hyphens.
+      - name: intro_layout
+        type: string
+        hidden: true
+
+  - name: research-overview
+    label: Research introduction
+    type: file
+    path: content/research-overview.json
+    format: json
+    operations:
+      delete: false
+    fields:
+      - name: title
+        label: Heading
+        type: string
+        required: true
+      - name: introduction
+        label: Introduction
+        component: formatted-text
+        required: true
+      - name: description
+        label: Short description for search results
+        type: text
+        required: true

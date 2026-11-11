@@ -1,0 +1,17 @@
+.infall-article .article-title{max-width:850px;margin-bottom:16px}
+.infall-subtitle{font-size:20px;color:var(--muted);margin-bottom:32px}
+.infall-article .prose{max-width:780px;margin:36px auto}
+.infall-article .infall-introduction{font-size:19px;margin-top:0}
+.infall-article h2{font-size:28px;margin-bottom:20px}
+.infall-article .science-figure{max-width:850px;margin:36px auto 44px}
+.infall-article .science-figure img{background:#fff}
+.infall-article .science-figure a{display:block}
+.infall-article .science-figure figcaption a{display:inline}
+.infall-article .infall-papers{border-top:1px solid #ffffff30;padding-top:30px;margin-top:42px}
+.paper-list{padding-left:24px;margin:0 0 24px}
+.paper-list li{padding-left:6px;margin:0 0 24px}
+.paper-list li>a{font-size:18px}
+.paper-list p{color:var(--muted);font-size:15px;margin:8px 0 0}
+.related-paper{font-size:15px;color:var(--muted)}
+.figure-credits{font-size:13px;color:var(--muted);margin-top:24px}
+@media(max-width:759px){.infall-article .article-title{font-size:31px}.infall-subtitle{font-size:18px}.infall-article .infall-introduction{font-size:17px}.infall-article h2{font-size:25px}.infall-article .prose{margin-block:28px}.infall-article .science-figure{margin-block:28px 34px}.paper-list li>a{font-size:16px}}
