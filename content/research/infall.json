@@ -30,6 +30,13 @@
     },
     {
       "type": "figure",
+      "src": "/website/assets/research/infall/streamer-disc-evolution.gif",
+      "alt": "Animation showing a stream of gas approaching a disc around a young star, striking its outer edge, and producing spiral arms as the disc changes shape.",
+      "caption": "<p>A gas stream falls onto a planet-forming disc and disturbs its shape, producing spiral arms. Brighter colours show higher gas column density: more gas along our line of sight. The animation shows the changing gas distribution in the simulation.</p>",
+      "anchor": "streamer-disc-animation"
+    },
+    {
+      "type": "figure",
       "src": "/website/assets/research/infall/anatomy-evolution.png",
       "alt": "Six simulation snapshots showing a gas stream meeting a disc and producing spiral arms over time.",
       "caption": "<p>Six stages of the simulation, read across the top row, then the bottom. The incoming stream disturbs the disc and leaves spiral patterns behind. Brighter colours show more gas along our line of sight. These are simulated images. <a href=\"https://arxiv.org/html/2410.18521v2#S1.F1\">Calcino et al. (2025), Figure 1.</a></p>",

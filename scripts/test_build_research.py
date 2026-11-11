@@ -71,6 +71,17 @@ def make_fixture(root):
     return articles
 
 
+class ImageDimensionTests(unittest.TestCase):
+    def test_gif_logical_screen_dimensions_for_both_versions(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            for header in (b"GIF87a", b"GIF89a"):
+                with self.subTest(version=header.decode("ascii")):
+                    path = Path(temporary) / (header.decode("ascii") + ".gif")
+                    # A 640-by-480 logical screen; values span bytes to check endianness.
+                    path.write_bytes(header + b"\x80\x02\xe0\x01\x00\x00\x00\x3b")
+                    self.assertEqual(builder.image_dimensions(path), (640, 480))
+
+
 class ProductionBuildTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

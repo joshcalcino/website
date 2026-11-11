@@ -169,8 +169,10 @@ def load_content():
 
 @lru_cache(maxsize=128)
 def image_dimensions(path):
-    """Read PNG, WebP, or JPEG dimensions without image-library dependencies."""
+    """Read PNG, WebP, JPEG, or GIF dimensions without image-library dependencies."""
     data = path.read_bytes()
+    if data[:6] in (b"GIF87a", b"GIF89a") and len(data) >= 10:
+        return int.from_bytes(data[6:8], "little"), int.from_bytes(data[8:10], "little")
     if data.startswith(b"\x89PNG\r\n\x1a\n") and len(data) >= 24 and data[12:16] == b"IHDR":
         return int.from_bytes(data[16:20], "big"), int.from_bytes(data[20:24], "big")
     if data[:4] == b"RIFF" and data[8:12] == b"WEBP":

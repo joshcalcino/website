@@ -1,5 +1,12 @@
 Research figures on the infall page
 
+streamer-disc-evolution.gif
+Animation supplied for this research page as out.mp4.
+Converted to a looping GIF at the original 800-by-600 resolution.
+The full 7.95-second sequence is retained, sampled at 20 frames per second.
+No cropping, added annotations, or change to playback speed.
+The caption is a new plain-language description of the supplied animation.
+
 ../image.png (assets/research/image.png)
 Figure 1 from Garufi et al. (2024),
 The SPHERE view of the Taurus star-forming region:
