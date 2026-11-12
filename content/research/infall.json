@@ -41,13 +41,13 @@
     },
     {
       "type": "text",
-      "body": "<h2>Modeling infall around AB Aurigae</h2><p>AB Aurigae is a young star surrounded by a disc with spectacular spiral arms. It continues to amaze me that we are able to image such distant systems with such exquisite detail.</p><p></p>"
+      "body": "<h2>Modeling infall around AB Aurigae</h2><p>AB Aurigae is a young star surrounded by a disc with spectacular spiral arms. It never ceases to amaze me that we are able to image these distant systems with such exquisite detail! This disc is <em>gigantic</em>. The bright but diffuse looking ring you see in the image below is located about 2 times the distance from the Sun to Neptune in our own Solar System. The spiral structures you see outside are even further, hundreds of times the distance between the Earth and the Sun! </p>"
     },
     {
       "type": "figure",
       "src": "/website/assets/research/eso2008a.jpg",
       "alt": "Bright, tightly wound spiral arms in the disc around AB Aurigae, seen in near-infrared scattered light.",
-      "caption": "<p>Spiral structure in the disc around AB Aurigae, imaged in polarised near-infrared light with SPHERE on ESO’s Very Large Telescope. Credit: <a href=\"https://www.eso.org/public/images/eso2008a/\">ESO/Boccaletti et al.</a></p>",
+      "caption": "<p>The hypnotizing spiral structure in the disc around AB Aurigae, imaged in polarised near-infrared light with SPHERE on ESO’s Very Large Telescope. Credit: <a href=\"https://www.eso.org/public/images/eso2008a/\">ESO/Boccaletti et al.</a></p>",
       "anchor": "ab-aur-sphere"
     },
     {
