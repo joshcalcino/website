@@ -79,9 +79,9 @@
   "subtitle": "<p></p>",
   "summary": "<p>Recent observations are increasingly revealing that protoplanetary discs, the birthplaces of planets, remain connected with their surrounding environment for much longer than previously thought. What happens when this material, known simply as infall, interacts with the disc? In my work <em>Anatomy of a Fall</em>, and subsequent work modeling the disc around AB Aurigae, I explore how infall through so-called streamers can generate spiral arms and perturb the velocity field of the gas in the disc—and how to recognize these effects in observations.</p>",
   "thumbnail": {
-    "src": "/website/assets/research/infall/ab-aur-comparison.png",
-    "alt": "AB Aurigae observations on the left, compared with a simulation including infall and a proposed stellar companion on the right.",
-    "caption": "<p>AB Aurigae observed (left) and my simulation (right). The color contours show the millimeter dust grain distribution seen with ALMA. Calcino, Price &amp; Ormel (2026).</p>"
+    "src": "/website/assets/research/eso2008a.jpg",
+    "alt": "Bright, tightly wound spiral arms in the disc around AB Aurigae, seen in near-infrared scattered light.",
+    "caption": "<p>AB Aurigae observed in polarised near-infrared light with VLT/SPHERE. Credit: <a href=\"https://www.eso.org/public/images/eso2008a/\">ESO/Boccaletti et al.</a></p>"
   },
   "description": "How streams of fresh gas reshape planet-forming discs, from Anatomy of a Fall to the spirals around AB Aurigae.",
   "order": 1,
