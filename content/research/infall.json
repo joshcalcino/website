@@ -44,6 +44,13 @@
       "body": "<h2>Modeling infall around AB Aurigae</h2><p>AB Aurigae is a young star surrounded by a disc with spectacular spiral arms. It continues to amaze me that we are able to image such distant systems with such exquisite detail.</p><p></p>"
     },
     {
+      "type": "figure",
+      "src": "/website/assets/research/eso2008a.jpg",
+      "alt": "Bright, tightly wound spiral arms in the disc around AB Aurigae, seen in near-infrared scattered light.",
+      "caption": "<p>Spiral structure in the disc around AB Aurigae, imaged in polarised near-infrared light with SPHERE on ESO’s Very Large Telescope. Credit: <a href=\"https://www.eso.org/public/images/eso2008a/\">ESO/Boccaletti et al.</a></p>",
+      "anchor": "ab-aur-sphere"
+    },
+    {
       "type": "text",
       "body": "<h2>Connecting the spirals and the dust ring</h2><p>We also explored a model combining infall with a second star orbiting inside the disc's central gap. Together, they reproduced many features of AB Aur's spiral pattern and dust ring. The comparison below shows what this model would look like through a telescope. It is a promising explanation, rather than an exact match, and the proposed companion star has not been detected.</p>"
     },

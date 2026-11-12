@@ -51,6 +51,15 @@ License of the arXiv source: CC BY 4.0
 https://creativecommons.org/licenses/by/4.0/
 Unaltered figure; displayed caption is a new plain-language explanation.
 
+../eso2008a.jpg (assets/research/eso2008a.jpg)
+SPHERE image of the disc around AB Aurigae.
+ESO/Boccaletti et al., released 20 May 2020.
+https://www.eso.org/public/images/eso2008a/
+User-uploaded ESO screensize JPEG; image pixels are unchanged.
+Observed in polarised near-infrared light with VLT/SPHERE.
+Displayed caption is a new plain-language description.
+ESO image usage terms: https://www.eso.org/public/outreach/copyright/
+
 ab-aur-comparison.png
 Figure 6 from Calcino, Price & Ormel (2026),
 Infall Explains the Disk Kinematics of AB Aur without Gravitational Instability.

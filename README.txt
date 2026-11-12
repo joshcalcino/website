@@ -19,6 +19,16 @@ Everyday editing:
 Your existing Pages CMS connection to this repository works for all these editors;
 no extra authorization is needed. GitHub Pages publishes through GitHub Actions.
 
+Pages CMS editing precaution:
+  The hosted editor currently has an open bug that can reset unsaved list items
+  when browser focus changes or entry data refreshes:
+  https://github.com/hunvreus/pagescms/issues/421
+  Upload new images through Images and figures before opening the article.
+  Then select the uploaded image in the article and save each completed addition
+  before switching tabs or opening a file chooser. Uploading a file alone does
+  not save the article. This reduces exposure to the bug; the hosted editor still
+  needs the upstream fix. Saved versions remain recoverable in GitHub history.
+
 What each editor changes:
   Home: your name, tagline, portrait, background, biography, interests, CV/resume
     downloads, and profile links. Each tagline line appears on a separate line.
