@@ -62,7 +62,7 @@
     },
     {
       "type": "text",
-      "body": "<h2>Connecting the spirals and the dust ring</h2><p>We also explored a model combining infall with a second star orbiting inside the disc's central gap. Together, they reproduced many features of AB Aur's spiral pattern and dust ring. The comparison below shows what this model would look like through a telescope. It is a promising explanation, rather than an exact match, and the proposed companion star has not been detected.</p>"
+      "body": "<h2>Connecting infall with potential companions</h2><p>In <a href=\"yeah find this paper\">Poblete et al. 2019</a> (I was second author), we showed that a binary companion inside the cavity of AB Aurigae could explain a lot of the observations of perturbed gas kinematics and spiral arms in the cavity. Since then, our understanding of AB Aurigae has evolved and we now know of the ongoing infall. Therefore, I revisited our old model of AB Aurigae and added some infall. The result below is quite compelling: The match with the observations somewhat speaks for itself! Our hypothesized companion has not been detected yet, and there is a bunch of debate in the literature about whether there is a planet in this system (known as <a href=\"wiki?\">AB Aur b</a>). But no companion is really truly confirmed yet in my humble opinion. Hopefully in the not too distant future we will have a clearer picture!</p>"
     },
     {
       "type": "figure",
@@ -70,10 +70,6 @@
       "alt": "Observations of AB Aurigae on the left and simulated telescope images on the right, both showing spiral structure and a ring of dust.",
       "caption": "<p>Observations on the left; our model on the right. The coloured images show starlight scattered by dust, while the overlaid contours trace the dust's millimetre emission. <a href=\"https://arxiv.org/html/2510.05601v2#S5.F6\">Calcino, Price &amp; Ormel (2026), Figure 6.</a> Observational data: Boccaletti et al. (2020) and Speedie et al. (2024, 2025).</p>",
       "anchor": "ab-aur-comparison"
-    },
-    {
-      "type": "text",
-      "body": "<p>Understanding how discs respond to their surroundings helps us interpret the structures we see in them. Before attributing a spiral to an unseen planet or to the disc's own gravity, we need to consider the gas arriving from outside.</p>"
     },
     {
       "type": "text",
