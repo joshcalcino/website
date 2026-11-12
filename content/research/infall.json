@@ -1,6 +1,6 @@
 {
   "title": "From theory to application: Modeling infall around AB Aurigae",
-  "published": false,
+  "published": true,
   "sections": [
     {
       "type": "text",
@@ -77,7 +77,7 @@
     }
   ],
   "subtitle": "<p></p>",
-  "summary": "<p>The discs where planets form can keep receiving gas from their surroundings. What happens when that fresh material arrives? In <em>Anatomy of a Fall</em> and my follow-up work on AB Aurigae, I explore how incoming streams create spiral arms and disturb the motion of gas—and how to recognise these effects in telescope observations.</p>",
+  "summary": "<p>Recent observations are increasingly revealing that protoplanetary discs, the birthplaces of planets, remain connected with their surrounding environment for much longer than previously thought. What happens when this material, known simply as infall, interacts with the disc? In my work <em>Anatomy of a Fall</em>, and subsequent work modeling the disc around AB Aurigae, I explore how infall through so-called streamers can generate spiral arms and perturb the velocity field of the gas in the disc—and how to recognize these effects in observations.</p>",
   "thumbnail": {
     "src": "/website/assets/research/infall/ab-aur-comparison.png",
     "alt": "AB Aurigae observations on the left, compared with a simulation including infall and a proposed stellar companion on the right.",
