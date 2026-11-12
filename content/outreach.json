@@ -1,0 +1,62 @@
+{
+  "title": "Public Outreach | Josh Calcino",
+  "description": "Public lectures, school outreach, and science communication by Josh Calcino.",
+  "background": "/website/assets/images/7145bb_0b4646c74fa948f081a5e1009a2cc7b7~mv2_d_2405_1275_s_2.webp",
+  "heading": "PUBLIC OUTREACH",
+  "introduction": "<p>Science is my passion, and I love sharing that passion. I want to make others as excited as I am about just how much we know, and how much more we can learn as a species. I have given half a dozen hour long public lectures, visited schools in cities and rural areas, written articles for The Conversation, and filmed a short segment for the kids TV show Scope.</p>",
+  "testimonials_intro": "<p>Here are some comments I have received from my public lectures:</p>",
+  "testimonials": [
+    {
+      "quote": "<p>&quot;So Amazing! Really appreciated the simple to understand language, well structured, so informative, great energy and enthusiasm.&quot;</p>"
+    },
+    {
+      "quote": "<p>“Impeccable presentation. Blown away. Thank you.”</p>"
+    },
+    {
+      "quote": "<p>&quot;Very interesting, informative and very well presented.&quot;</p>"
+    },
+    {
+      "quote": "<p>&quot;Very informative, great presenter, made subject interesting and understandable.&quot;</p>"
+    }
+  ],
+  "event_sections": [
+    {
+      "heading": "Notable Talks",
+      "events": [
+        {
+          "date": "Aug 2019",
+          "description": "Luminary Lecture at Helensvale Library for National Science Week"
+        },
+        {
+          "date": "Aug 2018",
+          "description": "Luminary Lecture at Broadbeach Library for National Science Week"
+        },
+        {
+          "date": "Aug 2017",
+          "description": "2x Public Lecture at Charleville Cosmos Centre"
+        },
+        {
+          "date": "May 2017",
+          "description": "Pint of Science Brisbane"
+        }
+      ]
+    },
+    {
+      "heading": "Other Activities",
+      "events": [
+        {
+          "date": "Jun 2018",
+          "description": "Short Segment on Scope (Season 4, Ep. 59) where I discussed how to detect black holes"
+        },
+        {
+          "date": "Jun 2017",
+          "description": "Astronomer in Residence for the ARC Centre of Excellence for All-Sky Astrophysics at Uluru"
+        },
+        {
+          "date": "Mar 2017",
+          "description": "Young Science Ambassador for the Wonder of Science"
+        }
+      ]
+    }
+  ]
+}

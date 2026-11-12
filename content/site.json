@@ -1,0 +1,30 @@
+{
+  "name": "Josh Calcino",
+  "mobile_name": "Josh Calcino",
+  "footer": "© Josh Calcino.",
+  "default_image": "/website/assets/images/7145bb_4aac35370ef84cd1a2758e4939702e2d~mv2.webp",
+  "research_background": "/website/assets/images/7145bb_4c72a5519133421f8156bef918339169~mv2.webp",
+  "navigation": [
+    {
+      "label": "Home",
+      "href": "/website/"
+    },
+    {
+      "label": "Research",
+      "href": "/website/research/"
+    },
+    {
+      "label": "Public Outreach",
+      "href": "/website/public-outreach/"
+    },
+    {
+      "label": "Astrophotography",
+      "href": "/website/astrophotography/"
+    }
+  ],
+  "not_found": {
+    "title": "Page not found",
+    "message": "The page you requested is not here.",
+    "button_label": "Back to Home"
+  }
+}

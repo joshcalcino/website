@@ -5,6 +5,12 @@ media:
     output: /website/assets
     extensions: [png, jpg, jpeg, webp, gif]
     rename: safe
+  - name: docs
+    label: CV and resume PDFs
+    input: assets/cv
+    output: /website/assets/cv
+    extensions: [pdf]
+    rename: false
 
 components:
   formatted-text:
@@ -13,7 +19,24 @@ components:
       format: html
       switcher: false
       media: images
-      path: assets/research
+      path: assets/images
+  image:
+    type: image
+    options:
+      media: images
+      path: assets/images
+  image-with-description:
+    type: object
+    fields:
+      - name: src
+        label: Image
+        component: image
+        required: true
+      - name: alt
+        label: Image description
+        type: text
+        required: true
+        description: Describe the image for readers using a screen reader.
   figure:
     type: object
     fields:
@@ -37,6 +60,293 @@ components:
         hidden: true
 
 content:
+  - name: home
+    label: Home
+    type: file
+    path: content/home.json
+    format: json
+    operations:
+      delete: false
+    fields:
+      - name: name
+        label: Your name
+        type: string
+        required: true
+      - name: tagline
+        label: Text beneath your name
+        type: text
+        description: Each line appears on its own line beneath your name.
+      - name: portrait
+        label: Portrait
+        component: image-with-description
+        required: true
+      - name: background
+        label: Background image
+        component: image
+        required: true
+      - name: about_heading
+        label: About section heading
+        type: string
+        required: true
+      - name: biography
+        label: Biography
+        component: formatted-text
+        required: true
+      - name: interests
+        label: Interests
+        component: formatted-text
+      - name: downloads
+        label: CV and resume links
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{fields.label}"
+        description: Choose a PDF from CV and resume PDFs, or upload a replacement with the same filename.
+        fields:
+          - name: label
+            label: Link text
+            type: string
+            required: true
+          - name: file
+            label: PDF
+            type: file
+            required: true
+            options:
+              media: docs
+              path: assets/cv
+              extensions: [pdf]
+              rename: false
+      - name: social_links
+        label: Profile links
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{fields.label}"
+        fields:
+          - name: label
+            label: Link text
+            type: string
+            required: true
+          - name: url
+            label: Profile URL
+            type: string
+            required: true
+          - name: icon
+            label: Icon
+            type: select
+            options:
+              values:
+                - name: github
+                  label: GitHub
+                - name: linkedin
+                  label: LinkedIn
+                - name: none
+                  label: No icon
+      - name: title
+        label: Browser tab title
+        type: string
+        required: true
+      - name: description
+        label: Short description for search results
+        type: text
+        required: true
+
+  - name: public-outreach
+    label: Public Outreach
+    type: file
+    path: content/outreach.json
+    format: json
+    operations:
+      delete: false
+    fields:
+      - name: heading
+        label: Page heading
+        type: string
+        required: true
+      - name: introduction
+        label: Introduction
+        component: formatted-text
+        required: true
+      - name: background
+        label: Background image
+        component: image
+        required: true
+      - name: testimonials_intro
+        label: Introduction to audience comments
+        component: formatted-text
+      - name: testimonials
+        label: Audience comments
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "Audience comment {index}"
+        fields:
+          - name: quote
+            label: Comment
+            component: formatted-text
+            required: true
+      - name: event_sections
+        label: Talks and activities
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{fields.heading}"
+        description: Drag sections or events to change their order.
+        fields:
+          - name: heading
+            label: Section heading
+            type: string
+            required: true
+          - name: events
+            label: Events
+            type: object
+            list:
+              collapsible:
+                collapsed: true
+                summary: "{fields.date} · Event {index}"
+            fields:
+              - name: date
+                label: Date
+                type: string
+                required: true
+                description: Use a readable date such as Aug 2019.
+              - name: description
+                label: Event description
+                component: formatted-text
+                required: true
+      - name: title
+        label: Browser tab title
+        type: string
+        required: true
+      - name: description
+        label: Short description for search results
+        type: text
+        required: true
+
+  - name: astrophotography
+    label: Astrophotography
+    type: file
+    path: content/photography.json
+    format: json
+    operations:
+      delete: false
+    fields:
+      - name: heading
+        label: Page heading
+        type: string
+        required: true
+      - name: introduction
+        label: Introduction
+        component: formatted-text
+        required: true
+      - name: intro_image
+        label: Image beside the introduction
+        component: image-with-description
+        required: true
+      - name: gallery
+        label: Photo gallery
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{index}. {fields.alt}"
+        description: Add photos and drag them into the order you want on the website.
+        fields:
+          - name: image
+            label: Gallery image
+            component: image
+            required: true
+          - name: original
+            label: Full-size image (optional)
+            type: image
+            description: Choose an original for the enlarged view. Leave empty to use the gallery image.
+            options:
+              media: images
+              path: assets/originals
+          - name: alt
+            label: Image description
+            type: text
+            required: true
+            description: Describe the photograph for readers using a screen reader.
+          - name: caption
+            label: Caption
+            type: text
+      - name: title
+        label: Browser tab title
+        type: string
+        required: true
+      - name: description
+        label: Short description for search results
+        type: text
+        required: true
+
+  - name: site-settings
+    label: Site settings
+    type: file
+    path: content/site.json
+    format: json
+    operations:
+      delete: false
+    fields:
+      - name: name
+        label: Site name
+        type: string
+        required: true
+      - name: mobile_name
+        label: Name in the mobile header
+        type: string
+        required: true
+      - name: footer
+        label: Footer text
+        type: string
+        required: true
+      - name: default_image
+        label: Default image for shared links
+        component: image
+        required: true
+      - name: research_background
+        label: Background image for Research pages
+        component: image
+        required: true
+      - name: navigation
+        label: Navigation links
+        type: object
+        required: true
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{fields.label}"
+        fields:
+          - name: label
+            label: Link text
+            type: string
+            required: true
+          - name: href
+            label: Page address
+            type: string
+            required: true
+            description: Use a website address such as /website/research/.
+      - name: not_found
+        label: Page not found message
+        type: object
+        fields:
+          - name: title
+            label: Heading
+            type: string
+            required: true
+          - name: message
+            label: Message
+            type: string
+            required: true
+          - name: button_label
+            label: Home button text
+            type: string
+            required: true
+
   - name: research-articles
     label: Research articles
     type: collection
@@ -64,7 +374,10 @@ content:
       - name: sections
         label: Article sections
         type: block
-        list: true
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{fields.type} section {index}"
         required: true
         blockKey: type
         description: Edit the text, figures, and videos here. Drag sections to change their order.

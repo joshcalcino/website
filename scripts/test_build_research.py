@@ -35,7 +35,47 @@ def make_fixture(root):
         "config/private.html": "Private configuration",
         "docs/private.html": "Private documentation",
         "README.txt": "Editor instructions",
+        "_site/stale.html": "An earlier artifact must not become a nested public site",
         "research/draft-note/index.html": "Stale draft HTML must not be copied",
+        "content/site.json": json.dumps({
+            "name": "Fixture Person", "mobile_name": "Fixture mobile name",
+            "footer": "Fixture copyright notice", "default_image": "/website/assets/test.png",
+            "research_background": "/website/assets/test.png",
+            "navigation": [
+                {"label": "Fixture Home", "href": "/website/"},
+                {"label": "Fixture Research", "href": "/website/research/"},
+                {"label": "Fixture Outreach", "href": "/website/public-outreach/"},
+                {"label": "Fixture Photos", "href": "/website/astrophotography/"},
+            ],
+            "not_found": {"title": "Fixture missing page", "message": "No fixture at this address.", "button_label": "Fixture home button"},
+        }),
+        "content/home.json": json.dumps({
+            "title": "Fixture homepage | Fixture Person", "description": "Fixture home description",
+            "background": "/website/assets/test.png", "name": "Fixture Person",
+            "tagline": "Fixture scientist\nFixture teacher",
+            "portrait": {"src": "/website/assets/test.png", "alt": "Fixture portrait"},
+            "about_heading": "Fixture biography", "biography": "<p>Original fixture biography.</p>",
+            "interests": "<p>Original fixture interests.</p>",
+            "downloads": [{"label": "Fixture CV", "file": "/website/assets/resume.pdf"}],
+            "social_links": [{"label": "Fixture profile", "url": "https://example.org/profile", "icon": "github"}],
+        }),
+        "content/outreach.json": json.dumps({
+            "title": "Fixture outreach | Fixture Person", "description": "Fixture outreach description",
+            "heading": "Fixture outreach", "background": "/website/assets/test.png",
+            "introduction": "<p>Original fixture outreach introduction.</p>",
+            "testimonials_intro": "<p>Fixture audience feedback.</p>",
+            "testimonials": [{"quote": "<p>Fixture testimonial.</p>"}],
+            "event_sections": [{"heading": "Fixture talks", "events": [{"date": "2026", "description": "<p>Original fixture event.</p>"}]}],
+        }),
+        "content/photography.json": json.dumps({
+            "title": "Fixture photography | Fixture Person", "description": "Fixture photography description",
+            "heading": "Fixture photography", "introduction": "<p>Fixture gallery introduction.</p>",
+            "intro_image": {"src": "/website/assets/test.png", "alt": "Fixture introductory photograph"},
+            "gallery": [
+                {"image": "/website/assets/test.png", "original": "/website/assets/test.png", "alt": "First fixture photograph", "caption": "First fixture caption"},
+                {"image": "/website/assets/test.png", "original": "", "alt": "Second fixture photograph", "caption": "Second fixture caption"},
+            ],
+        }),
         "content/research-overview.json": json.dumps({
             "title": "Fixture research", "description": "Test overview",
             "introduction": "<p>Test introduction.</p>",
@@ -48,9 +88,11 @@ def make_fixture(root):
     (root / "assets/test.png").write_bytes(base64.b64decode(
         "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="
     ))
+    (root / "assets/resume.pdf").write_bytes(b"%PDF-1.4\n% Synthetic test download\n%%EOF\n")
     shutil.copytree(SITE / "templates", root / "templates")
     (root / "scripts").mkdir()
-    shutil.copy2(SCRIPT, root / "scripts/build_research.py")
+    for name in ("build_research.py", "build_site.py", "home_page.py", "other_pages.py"):
+        shutil.copy2(SCRIPT.with_name(name), root / "scripts" / name)
     articles = {}
     for slug, published in (("draft-note", False), ("published-note", True)):
         article = {
@@ -91,7 +133,7 @@ class ProductionBuildTests(unittest.TestCase):
         make_fixture(cls.source)
         cls.output = Path(cls.temporary.name) / "public"
         subprocess.run(
-            [sys.executable, str(cls.source / "scripts/build_research.py"), "--output", str(cls.output)],
+            [sys.executable, str(cls.source / "scripts/build_site.py"), "--output", str(cls.output)],
             check=True, capture_output=True, text=True,
         )
 
@@ -109,12 +151,17 @@ class ProductionBuildTests(unittest.TestCase):
         article = (self.output / "research/published-note/index.html").read_text()
         self.assertIn("Fixture published-note", article)
         self.assertIn("https://www.youtube-nocookie.com/embed/abcdefghijk", article)
-        for relative in ("index.html", "assets/site.css", "assets/site.js", "assets/test.png", ".nojekyll"):
+        homepage = (self.output / "index.html").read_text()
+        self.assertIn('<h1 id="name">Fixture Person</h1>', homepage)
+        self.assertIn("Original fixture biography.", homepage)
+        self.assertIn('href="/website/assets/resume.pdf"', homepage)
+        self.assertIn("Fixture scientist<br>Fixture teacher", homepage)
+        for relative in ("assets/site.css", "assets/site.js", "assets/test.png", "assets/resume.pdf", ".nojekyll"):
             with self.subTest(path=relative):
                 self.assertEqual((self.source / relative).read_bytes(), (self.output / relative).read_bytes())
 
     def test_editor_and_build_sources_are_not_published(self):
-        for relative in (".pages.yml", ".github", ".git", "content", "templates", "scripts", "config", "docs", "README.txt"):
+        for relative in (".pages.yml", ".github", ".git", "content", "templates", "scripts", "config", "docs", "README.txt", "_site"):
             with self.subTest(path=relative):
                 self.assertFalse((self.output / relative).exists())
         self.assertFalse(list(self.output.rglob("*.py")))
@@ -131,9 +178,23 @@ class ContentValidationTests(unittest.TestCase):
         root_patch = patch.object(builder, "ROOT", self.root)
         root_patch.start()
         self.addCleanup(root_patch.stop)
+        path_patch = patch.object(sys, "path", [str(self.root / "scripts"), *sys.path])
+        path_patch.start()
+        self.addCleanup(path_patch.stop)
 
     def save_article(self):
         self.article_path.write_text(json.dumps(self.article), encoding="utf-8")
+
+    def read_page(self, name):
+        return json.loads((self.root / "content" / (name + ".json")).read_text(encoding="utf-8"))
+
+    def save_page(self, name, data):
+        (self.root / "content" / (name + ".json")).write_text(json.dumps(data), encoding="utf-8")
+
+    def build(self, output):
+        with patch.object(sys, "argv", [str(SCRIPT), "--output", str(output)]):
+            with redirect_stderr(io.StringIO()), redirect_stdout(io.StringIO()):
+                builder.main()
 
     def test_missing_or_null_optional_cms_fields_render_safely(self):
         original = json.loads(json.dumps(self.article))
@@ -171,6 +232,121 @@ class ContentValidationTests(unittest.TestCase):
         self.assertEqual(result.exception.code, 2)
         self.assertIn("title must be a nonempty string", error.getvalue())
         self.assertFalse(output.exists())
+
+    def test_homepage_biography_and_cv_edits_reach_the_public_page(self):
+        home = self.read_page("home")
+        home["biography"] = '<p>Edited biography with <strong>new work</strong>.</p>'
+        home["downloads"] = [{"label": "Updated fixture CV", "file": "/website/assets/updated-cv.pdf"}]
+        (self.root / "assets/updated-cv.pdf").write_bytes(b"%PDF-1.4\n% Updated synthetic CV\n%%EOF\n")
+        self.save_page("home", home)
+        output = self.root.parent / "edited-home"
+        self.build(output)
+        page = (output / "index.html").read_text()
+        self.assertIn(home["biography"], page)
+        self.assertNotIn("Original fixture biography.", page)
+        self.assertIn('href="/website/assets/updated-cv.pdf">Updated fixture CV', page)
+        self.assertNotIn('href="/website/assets/resume.pdf"', page)
+        self.assertEqual((self.root / "assets/updated-cv.pdf").read_bytes(), (output / "assets/updated-cv.pdf").read_bytes())
+
+    def test_outreach_events_and_gallery_caption_order_follow_saved_json(self):
+        outreach = self.read_page("outreach")
+        outreach["event_sections"][0]["events"] = [{"date": "Nov 2026", "description": "<p>A newly saved fixture talk.</p>"}]
+        self.save_page("outreach", outreach)
+        photography = self.read_page("photography")
+        photography["gallery"].reverse()
+        photography["gallery"][0]["caption"] = 'Edited caption with "quoted" stars & planets'
+        self.save_page("photography", photography)
+        output = self.root.parent / "edited-other-pages"
+        self.build(output)
+        outreach_page = (output / "public-outreach/index.html").read_text()
+        self.assertIn("Nov 2026", outreach_page)
+        self.assertIn("<p>A newly saved fixture talk.</p>", outreach_page)
+        self.assertNotIn("Original fixture event.", outreach_page)
+        gallery = (output / "astrophotography/index.html").read_text()
+        self.assertIn('data-caption="Edited caption with &quot;quoted&quot; stars &amp; planets"', gallery)
+        self.assertIn('aria-label="View photograph 1: Second fixture photograph"', gallery)
+        self.assertLess(gallery.index('data-alt="Second fixture photograph"'), gallery.index('data-alt="First fixture photograph"'))
+
+    def test_global_navigation_footer_and_404_settings_reach_every_page(self):
+        site = self.read_page("site")
+        site["navigation"][0]["label"] = "Edited Home Navigation"
+        site["footer"] = "Edited fixture footer & attribution"
+        site["not_found"] = {"title": "Edited missing title", "message": "Edited missing message", "button_label": "Edited home button"}
+        self.save_page("site", site)
+        output = self.root.parent / "edited-settings"
+        self.build(output)
+        for relative in ("index.html", "public-outreach/index.html", "astrophotography/index.html", "research/index.html", "research/published-note/index.html", "404.html"):
+            with self.subTest(page=relative):
+                page = (output / relative).read_text()
+                self.assertIn("Edited Home Navigation</a>", page)
+                self.assertIn("Edited fixture footer &amp; attribution", page)
+                self.assertNotIn("Fixture copyright notice", page)
+        missing = (output / "404.html").read_text()
+        for value in site["not_found"].values():
+            self.assertIn(value, missing)
+        self.assertNotIn("/404.html", (output / "sitemap.xml").read_text())
+
+    def test_invalid_new_page_data_fails_before_any_output_write(self):
+        cases = [
+            ("home", lambda data: data.update(biography="")),
+            ("home", lambda data: data["downloads"][0].update(file="/website/assets/test.png")),
+            ("outreach", lambda data: data["event_sections"][0]["events"][0].update(description="")),
+            ("photography", lambda data: data["gallery"][0].update(image="/website/assets/missing.png")),
+            ("site", lambda data: data.update(navigation=[])),
+        ]
+        for index, (name, mutate) in enumerate(cases):
+            with self.subTest(page=name, case=index):
+                original = self.read_page(name)
+                invalid = json.loads(json.dumps(original))
+                mutate(invalid)
+                self.save_page(name, invalid)
+                output = self.root.parent / ("invalid-new-page-" + str(index))
+                with self.assertRaises(SystemExit) as result:
+                    self.build(output)
+                self.assertEqual(result.exception.code, 2)
+                self.assertFalse(output.exists())
+                self.save_page(name, original)
+
+    def test_optional_new_page_lists_and_null_fields_render_safely(self):
+        originals = {name: self.read_page(name) for name in ("home", "outreach", "photography", "site")}
+        for missing in (True, False):
+            with self.subTest(missing=missing):
+                pages = json.loads(json.dumps(originals))
+                for name, fields in (("home", ("tagline", "interests", "downloads", "social_links")), ("outreach", ("testimonials_intro", "testimonials", "event_sections")), ("photography", ("gallery",)), ("site", ("not_found",))):
+                    for field in fields:
+                        if missing:
+                            pages[name].pop(field, None)
+                        else:
+                            pages[name][field] = None
+                    self.save_page(name, pages[name])
+                output = self.root.parent / ("optional-new-pages-" + str(missing))
+                self.build(output)
+                home = (output / "index.html").read_text()
+                outreach = (output / "public-outreach/index.html").read_text()
+                gallery = (output / "astrophotography/index.html").read_text()
+                self.assertNotIn('<p id="cv"', home)
+                self.assertNotIn("<blockquote>", outreach)
+                self.assertNotIn('class="event-section"', outreach)
+                self.assertNotIn("data-gallery-item", gallery)
+                self.assertNotIn("None", home + outreach + gallery)
+                self.assertIn("Page not found", (output / "404.html").read_text())
+        # Nested cleared fields keep valid parent entries and use sensible fallbacks.
+        for name, data in originals.items():
+            self.save_page(name, data)
+        home = self.read_page("home")
+        home["social_links"][0]["icon"] = None
+        self.save_page("home", home)
+        outreach = self.read_page("outreach")
+        outreach["event_sections"][0]["events"] = None
+        self.save_page("outreach", outreach)
+        photography = self.read_page("photography")
+        photography["gallery"][0].update(caption=None, original=None)
+        self.save_page("photography", photography)
+        output = self.root.parent / "optional-nested-fields"
+        self.build(output)
+        self.assertIn('href="https://example.org/profile">Fixture profile</a>', (output / "index.html").read_text())
+        self.assertNotIn("Original fixture event.", (output / "public-outreach/index.html").read_text())
+        self.assertIn('href="/website/assets/test.png" data-gallery-item data-caption=""', (output / "astrophotography/index.html").read_text())
 
 
 if __name__ == "__main__":

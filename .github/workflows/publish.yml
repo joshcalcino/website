@@ -29,10 +29,10 @@ jobs:
         uses: actions/configure-pages@v5
         with:
           enablement: false
-      - name: Check research publishing
-        run: python3 -m unittest discover -s scripts -p 'test_build_research.py'
+      - name: Check website publishing
+        run: python3 -m unittest discover -s scripts -p 'test_*.py'
       - name: Build website
-        run: python3 scripts/build_research.py --output _site
+        run: python3 scripts/build_site.py --output _site
       - name: Upload website
         uses: actions/upload-pages-artifact@v4
         with:

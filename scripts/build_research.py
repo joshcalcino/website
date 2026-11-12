@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build research pages from Pages CMS content, or package the public site."""
+"""Build the website from Pages CMS content, or package its public pages."""
 
 import argparse
 from functools import lru_cache
@@ -35,20 +35,42 @@ def require_text(data, key, source, allow_empty=False):
     return value
 
 
-def image_path(src, source):
+def asset_path(src, source, extensions=None):
     if not isinstance(src, str) or not src.startswith(BASE + "/assets/"):
-        raise ValueError(f"{source}: image paths must start with {BASE}/assets/")
+        raise ValueError(f"{source}: asset paths must start with {BASE}/assets/")
     parsed = urlsplit(src)
     decoded = unquote(parsed.path)
     if parsed.scheme or parsed.netloc or parsed.query or parsed.fragment or decoded != src or "\\" in src:
-        raise ValueError(f"{source}: unsafe image path {src!r}")
+        raise ValueError(f"{source}: unsafe asset path {src!r}")
     parts = src[len(BASE) + 1:].split("/")
     if any(part in {"", ".", ".."} for part in parts):
-        raise ValueError(f"{source}: unsafe image path {src!r}")
+        raise ValueError(f"{source}: unsafe asset path {src!r}")
     path = ROOT.joinpath(*parts)
     if not path.is_file() or not path.resolve().is_relative_to((ROOT / "assets").resolve()):
-        raise ValueError(f"{source}: local image does not exist: {src}")
+        raise ValueError(f"{source}: local asset does not exist: {src}")
+    if extensions and path.suffix.lower() not in extensions:
+        raise ValueError(f"{source}: choose a file ending in {', '.join(sorted(extensions))}")
     return src
+
+
+def image_path(src, source):
+    return asset_path(src, source)
+
+
+def link_url(value, source):
+    if not isinstance(value, str) or not value or any(char.isspace() for char in value):
+        raise ValueError(f"{source}: enter a valid link")
+    parsed = urlsplit(value)
+    if parsed.scheme in {"https", "http"} and parsed.netloc:
+        return value
+    if parsed.scheme in {"mailto", "tel"} and parsed.path:
+        return value
+    if value.startswith("#") and len(value) > 1:
+        return value
+    if not parsed.scheme and not parsed.netloc and parsed.path.startswith(BASE + "/"):
+        if "\\" not in value and not any(part == ".." for part in unquote(parsed.path).split("/")):
+            return value
+    raise ValueError(f"{source}: use a website path beginning {BASE}/ or a web/contact link")
 
 
 class RichImages(HTMLParser):
@@ -257,11 +279,63 @@ def render_sections(sections, intro_layout="stack"):
     return "\n".join(rendered)
 
 
-def render_pages(overview, articles):
-    templates = {name: Template((ROOT / "templates" / (name + ".html")).read_text(encoding="utf-8")) for name in ("base", "research-overview", "research-card", "research-article")}
+def load_site_settings():
+    source = "content/site.json"
+    data = read_json(ROOT / source)
+    for key in ("name", "mobile_name", "footer"):
+        require_text(data, key, source)
+    for key in ("default_image", "research_background"):
+        image_path(data.get(key), source + ": " + key)
+    navigation = data.get("navigation")
+    if not isinstance(navigation, list) or not navigation:
+        raise ValueError(f"{source}: navigation must contain at least one link")
+    for index, item in enumerate(navigation):
+        label = f"{source}: navigation link {index + 1}"
+        if not isinstance(item, dict):
+            raise ValueError(f"{label}: expected an object")
+        require_text(item, "label", label)
+        link_url(item.get("href"), label)
+    if data.get("not_found") is None:
+        data["not_found"] = {}
+    if not isinstance(data["not_found"], dict):
+        raise ValueError(f"{source}: not_found must be an object")
+    for key, default in (("title", "Page not found"), ("message", "The page you requested is not here."), ("button_label", "Back to Home")):
+        if data["not_found"].get(key) is None:
+            data["not_found"][key] = default
+        require_text(data["not_found"], key, source + ": not_found")
+    return data
 
-    def page(title, description, route, body, article=False, image=DEFAULT_IMAGE):
-        return templates["base"].substitute(title=escape(title + " | Josh Calcino"), description=escape(description, quote=True), canonical=ORIGIN + BASE + route, image=ORIGIN + image, kind="article" if article else "website", body_class="photo-background research" + (" infall-article" if article else ""), background=BACKGROUND, extra_styles='<link rel="stylesheet" href="/website/assets/research/infall/infall.css">' if article else "", body=body)
+
+def render_document(title, description, route, body, *, settings, body_class="", background=None, image=None, article=False):
+    navigation = []
+    for item in settings["navigation"]:
+        parsed = urlsplit(item["href"])
+        target = BASE + route
+        matches = parsed.path == target or (parsed.path != BASE + "/" and parsed.path.endswith("/") and target.startswith(parsed.path))
+        active = matches and not parsed.fragment and (not parsed.netloc or parsed.netloc == urlsplit(ORIGIN).netloc)
+        current = ' aria-current="page"' if active else ""
+        navigation.append('<a href="' + escape(item["href"], quote=True) + '"' + current + '>' + escape(item["label"]) + '</a>')
+    image = image or settings["default_image"]
+    background_style = ' style="--page-image:url(\'' + escape(background, quote=True) + '\')"' if background else ""
+    template = Template((ROOT / "templates/base.html").read_text(encoding="utf-8"))
+    return template.substitute(
+        title=escape(title), description=escape(description, quote=True), canonical=ORIGIN + BASE + route,
+        image=escape(ORIGIN + image, quote=True), kind="article" if article else "website",
+        body_class=escape(body_class, quote=True), background_style=background_style,
+        extra_styles='<link rel="stylesheet" href="/website/assets/research/infall/infall.css">' if article else "",
+        navigation="".join(navigation), mobile_name=escape(settings["mobile_name"]),
+        footer=escape(settings["footer"]), body=body,
+    )
+
+
+def render_pages(overview, articles, settings=None):
+    settings = settings if settings is not None else load_site_settings()
+    templates = {name: Template((ROOT / "templates" / (name + ".html")).read_text(encoding="utf-8")) for name in ("research-overview", "research-card", "research-article")}
+
+    def page(title, description, route, body, article=False, image=None):
+        return render_document(title + " | " + settings["name"], description, route, body, settings=settings,
+            body_class="photo-background research" + (" infall-article" if article else ""),
+            background=settings["research_background"], image=image, article=article)
 
     pages = {}
     cards = []
@@ -275,6 +349,13 @@ def render_pages(overview, articles):
     body = templates["research-overview"].substitute(title=escape(overview["title"]), introduction=overview["introduction"], cards="\n".join(cards))
     pages[Path("research/index.html")] = page(overview["title"], overview["description"], "/research/", body)
     return pages
+
+
+def render_not_found(settings):
+    data = settings["not_found"]
+    body = '<section class="content-width missing-page"><h1 class="section-heading">' + escape(data["title"]) + '</h1><p>' + escape(data["message"]) + '</p><a class="button" href="' + BASE + '/">' + escape(data["button_label"]) + '</a></section>'
+    return render_document(data["title"] + " | " + settings["name"], data["message"], "/404.html", body,
+        settings=settings, body_class="photography")
 
 
 def public_files(output):
@@ -331,9 +412,25 @@ def main():
             raise ValueError("--output must be a separate artifact directory, not a source directory or its parent")
         if output != ROOT and output.exists() and (not output.is_dir() or any(output.iterdir())):
             raise ValueError("--output must be an empty or new directory so stale or unpublished files cannot enter the deployment")
+        import home_page
+        import other_pages
+
+        settings = load_site_settings()
+        helpers = dict(read_json=read_json, require_text=require_text, rich_text=rich_text,
+            image_path=image_path, asset_path=asset_path, link_url=link_url)
+        home = home_page.load_content(ROOT, **helpers)
+        other = other_pages.load_content(ROOT, **helpers)
         overview, articles = load_content()
         included = articles if output == ROOT else [article for article in articles if article["published"]]
-        pages = render_pages(overview, included)
+        pages = render_pages(overview, included, settings)
+
+        def document(*values, **options):
+            return render_document(*values, settings=settings, **options)
+
+        rendering = dict(root=ROOT, document=document, dimension_attributes=dimension_attributes)
+        pages.update(home_page.render(home, **rendering))
+        pages.update(other_pages.render(other, **rendering))
+        pages[Path("404.html")] = render_not_found(settings)
         files = public_files(output)
         pages[Path("sitemap.xml")] = sitemap(files, pages)
         # Every content and template check above completes before the first write.
@@ -349,7 +446,7 @@ def main():
     except (OSError, ValueError, KeyError) as exc:
         parser.error(str(exc))
     mode = "Local build includes drafts" if output == ROOT else "Production artifact excludes drafts"
-    print(f"{mode}: research overview, {len(included)} articles, and sitemap in {output}")
+    print(f"{mode}: home, outreach, photography, research overview, {len(included)} articles, shared settings, and sitemap in {output}")
 
 
 if __name__ == "__main__":

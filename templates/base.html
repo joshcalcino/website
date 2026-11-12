@@ -15,21 +15,18 @@
 $extra_styles
   <script src="/website/assets/site.js" defer></script>
 </head>
-<body class="$body_class" style="--page-image:url('$background')">
+<body class="$body_class"$background_style>
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header">
     <div class="nav-shell">
-      <a class="mobile-name" href="/website/">Josh Calcino</a>
+      <a class="mobile-name" href="/website/">$mobile_name</a>
       <button class="menu-toggle" data-menu-toggle aria-controls="site-nav" aria-expanded="false" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
       <nav id="site-nav" class="site-nav" aria-label="Main navigation">
-        <a href="/website/">Home</a>
-        <a href="/website/research/" aria-current="page">Research</a>
-        <a href="/website/public-outreach/">Public Outreach</a>
-        <a href="/website/astrophotography/">Astrophotography</a>
+        $navigation
       </nav>
     </div>
   </header>
   <main id="main">$body</main>
-  <footer class="site-footer"><span>© Josh Calcino.</span></footer>
+  <footer class="site-footer"><span>$footer</span></footer>
 </body>
 </html>

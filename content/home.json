@@ -1,0 +1,36 @@
+{
+  "title": "Josh Calcino | Astrophysicist",
+  "description": "Josh Calcino — astrophysicist, astrophotographer, and science communicator.",
+  "background": "/website/assets/images/7145bb_4aac35370ef84cd1a2758e4939702e2d~mv2.webp",
+  "name": "Josh Calcino",
+  "tagline": "Astrophysicist, Astrophotographer,\nScience Communicator",
+  "portrait": {
+    "src": "/website/assets/images/7145bb_86d4baf2dfdd4fb29606fb732163cece~mv2.webp",
+    "alt": "Josh Calcino"
+  },
+  "about_heading": "ABOUT ME",
+  "biography": "<p>I am a Shuimu Scholar at Tsinghua University, in Beijing, China. I was a Diretor&#x27;s Postdoctoal Fellow at the Los Alamos National Laboratory in New Mexico, USA, between 2021-2023. My research  focuses on understanding how forming planets and binary star systems interact with their surrounding discs of gas and dust. For more details, and a list of my publications, head over to my <a href=\"/website/research/\">Research page</a>.</p>",
+  "interests": "<p>Outside of research I enjoy communicating all the exciting things that human beings know about the cosmos. For a list of the outreach events I have been a part of, or if you would like to request a public talk, check out my <a href=\"/website/public-outreach/\">Public Outreach page</a>.</p>\n<p>My other interests and hobbies include astrophotography, playing piano, hiking and exploring nature.</p>",
+  "downloads": [
+    {
+      "label": "Academic CV",
+      "file": "/website/assets/cv/Josh_Calcino_Academic_CV.pdf"
+    },
+    {
+      "label": "Data Science Résumé",
+      "file": "/website/assets/cv/Josh_Calcino_Data_Science_Resume.pdf"
+    }
+  ],
+  "social_links": [
+    {
+      "label": "GitHub",
+      "url": "https://github.com/joshcalcino",
+      "icon": "github"
+    },
+    {
+      "label": "LinkedIn",
+      "url": "https://www.linkedin.com/in/josh-calcino-757596286/",
+      "icon": "linkedin"
+    }
+  ]
+}
